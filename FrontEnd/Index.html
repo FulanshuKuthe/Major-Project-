@@ -1,0 +1,787 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secure Machine Learning Algorithms using Homomorphic Encryption for Healthcare Data</title>
+    <script src=""></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #b48d64;
+            --secondary-color: #68bba1;
+            --accent-color: #209498;
+            --dark-color: #0ad0ee;
+            --light-color: hsla(201, 73%, 52%, 0.294);
+            --text-primary: #868629af;
+            --text-secondary: #214ea87a;
+            --gradient: linear-gradient(135deg, #44cf506c 0%, #7230b365 50%);
+            --card-shadow: 0 20px 25px -5px rgba(129, 208, 77, 0.491), 0 10px 10px -5px rgba(173, 52, 52, 0.868);
+        }
+
+        body {
+            font-family: 'Times New Roman', -apple-system, BlinkMacSystemFont, sans-serif;
+            line-height: 1.6;
+            color: var(--text-primary);
+            overflow-x: hidden;
+        }
+
+        /* Navigation */
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(95, 57, 57, 0.95);
+            backdrop-filter: blur(20px);
+            z-index: 1000;
+            padding: 1rem 0;
+            border-bottom: 1px solid rgba(96, 77, 77, 0.435);
+            transition: all 0.3s ease;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 2rem;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 800;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-primary);
+            font-weight: 500;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary-color);
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -5px;
+            left: 0;
+            background: var(--gradient);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            background: var(--gradient);
+            display: flex;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 1;
+            left: 1;
+            right: 1;
+            bottom: 1;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000"><defs><radialGradient id="a" cx="50%" cy="50%"><stop offset="0%" stop-color="white" stop-opacity="0.1"/><stop offset="100%" stop-color="white" stop-opacity="0"/></radialGradient></defs><circle cx="200" cy="200" r="100" fill="url(%23a)"/><circle cx="800" cy="300" r="150" fill="url(%23a)"/><circle cx="400" cy="700" r="120" fill="url(%23a)"/></svg>');
+            animation: float 20s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(180deg); }
+        }
+
+        .hero-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            text-align: center;
+            color: rgb(139, 60, 60);
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero h1 {
+            font-size: 4rem;
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+            opacity: 0;
+            animation: slideUp 1s ease 0.5s forwards;
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            opacity: 0;
+            animation: slideUp 1s ease 0.7s forwards;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            opacity: 0;
+            animation: slideUp 1s ease 0.9s forwards;
+        }
+
+        .btn {
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 50px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background: rgb(202, 106, 106);
+            color: var(--primary-color);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(171, 75, 75, 0.445);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: rgb(136, 66, 66);
+            border: 2px solid rgb(65, 33, 33);
+        }
+
+        .btn-secondary:hover {
+            background: rgb(197, 100, 100);
+            color: var(--primary-color);
+        }
+
+        /* Sections */
+        .section {
+            padding: 6rem 0;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 3rem;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Features Grid */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .feature-card {
+            background: rgb(158, 191, 104);
+            padding: 2.5rem;
+            border-radius: 20px;
+            box-shadow: var(--card-shadow);
+            transition: all 0.3s ease;
+            border: 1px solid rgba(63, 91, 104, 0.1);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 25px 50px -12px rgba(213, 54, 54, 0.25);
+        }
+
+        .feature-icon {
+            width: 60px;
+            height: 60px;
+            background: var(--gradient);
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+            color: rgba(222, 77, 77, 0.632);
+            font-size: 1.5rem;
+        }
+
+        .feature-card h3 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+
+        .feature-card p {
+            color: var(--text-secondary);
+            line-height: 1.7;
+        }
+
+        /* Interactive Demo */
+        .demo-section {
+            background: var(--light-color);
+        }
+
+        .demo-container {
+            background: rgba(155, 27, 27, 0.465);
+            border-radius: 20px;
+            padding: 3rem;
+            box-shadow: var(--card-shadow);
+            margin: 2rem 0;
+        }
+
+        .encryption-demo {
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            gap: 2rem;
+            align-items: center;
+            margin: 2rem 0;
+        }
+
+        .data-box {
+            background: #09243fcc;
+            border: 2px dashed #1741756b;
+            border-radius: 15px;
+            padding: 2rem;
+            text-align: center;
+            min-height: 200px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .data-box.encrypted {
+            background: linear-gradient(135deg, hsla(48, 47%, 63%, 0.446), #cdbc77);
+            border-color: var(--accent-color);
+        }
+
+        .arrow {
+            font-size: 2rem;
+            color: var(--primary-color);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .demo-controls {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 2rem;
+        }
+
+        /* Use Cases */
+        .use-cases {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .use-case {
+            background: rgba(207, 59, 59, 0.52);
+            padding: 2rem;
+            border-radius: 15px;
+            border-left: 5px solid var(--secondary-color);
+            box-shadow: 0 5px 15px rgba(219, 80, 80, 0.718);
+            transition: all 0.3s ease;
+        }
+
+        .use-case:hover {
+            transform: translateX(5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Technologies */
+        .tech-stack {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .tech-item {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+        }
+
+        .tech-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .tech-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: var(--primary-color);
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--dark-color);
+            color: white;
+            text-align: center;
+            padding: 3rem 0;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            color: rgba(128, 70, 70, 0.8);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: rgb(104, 48, 48);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero p {
+                font-size: 1.1rem;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+
+            .encryption-demo {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+
+            .arrow {
+                transform: rotate(90deg);
+            }
+
+            .cta-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+
+        /* Animations */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Loading Animation */
+        .loading {
+            display: inline-flex;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(163, 56, 56, 0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease-in-out infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">SecureHealth ML</div>
+            <ul class="nav-links">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#features">Features</a></li>
+                <li><a href="#demo">Demo</a></li>
+                <li><a href="#contact">Contact</a></li>
+                 
+                <button onclick="location.href='Registration.html'">Register</button>
+                <button onclick="location.href='Login.html'">Login</button>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="hero-content">
+            <h1>Secure Machine Learning Algorithms using Homomorphic Encryption for Healthcare Data </h1>
+            <p>Revolutionary homomorphic encryption technology enabling privacy-preserving machine learning for sensitive healthcare data</p>
+            <div class="cta-buttons">
+                <a href="#demo" class="btn btn-primary">
+                    <i class="fas fa-play"></i> Try Demo
+                </a>
+                <a href="#features" class="btn btn-secondary">
+                    <i class="fas fa-info-circle"></i> Learn More
+                </a>
+            </div>
+        </div>
+    </section>
+
+   
+
+    <!-- Features Section -->
+    <section id="features" class="section">
+        <div class="container">
+            <h2 class="section-title fade-in">Key Features</h2>
+            <div class="features-grid">
+                <div class="feature-card fade-in">
+                    <div class="feature-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3>Privacy-First Architecture</h3>
+                    <p>Perform complex ML computations on encrypted healthcare data without ever exposing sensitive patient information.</p>
+                </div>
+                <div class="feature-card fade-in">
+                    <div class="feature-icon">
+                        <i class="fas fa-network-wired"></i>
+                    </div>
+                    <h3>Collaborative Learning</h3>
+                    <p>Enable multiple healthcare institutions to jointly train ML models while keeping their data completely private and secure.</p>
+                </div>
+                <div class="feature-card fade-in">
+                    <div class="feature-icon">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                    </div>
+                    <h3>Cloud-Ready Security</h3>
+                    <p>Leverage powerful cloud computing resources without compromising data security or regulatory compliance.</p>
+                </div>
+                <div class="feature-card fade-in">
+                    <div class="feature-icon">
+                        <i class="fas fa-balance-scale"></i>
+                    </div>
+                    <h3>HIPAA Compliant</h3>
+                    <p>Built-in compliance with healthcare regulations including HIPAA, GDPR, and other international privacy standards.</p>
+                </div>
+                <div class="feature-card fade-in">
+                    <div class="feature-icon">
+                        <i class="fas fa-brain"></i>
+                    </div>
+                    <h3>Advanced ML Support</h3>
+                    <p>Support for neural networks, deep learning, and complex statistical models on encrypted medical data.</p>
+                </div>
+                <div class="feature-card fade-in">
+                    <div class="feature-icon">
+                        <i class="fas fa-rocket"></i>
+                    </div>
+                    <h3>Optimized Performance</h3>
+                    <p>State-of-the-art optimizations and hardware acceleration for practical deployment in real healthcare environments.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Interactive Demo -->
+    <section id="demo" class="section demo-section">
+        <div class="container">
+            <h2 class="section-title fade-in">Interactive Demo</h2>
+            <div class="demo-container fade-in">
+                <h3 style="text-align: center; margin-bottom: 2rem;">Homomorphic Encryption in Action</h3>
+                <div class="encryption-demo">
+                    <div class="data-box" id="original-data">
+                        <h4>Original Healthcare Data</h4>
+                        <div id="data-content">
+                            <p><strong>Patient Records:</strong></p>
+                            <p>Age: 45, BP: 120/80</p>
+                            <p>Diagnosis: Diabetes</p>
+                            <p>Treatment: Metformin</p>
+                        </div>
+                    </div>
+                    <div class="arrow">
+                        <i class="fas fa-arrow-right" id="arrow-icon"></i>
+                    </div>
+                    <div class="data-box encrypted" id="encrypted-data">
+                        <h4>Encrypted Data</h4>
+                        <div id="encrypted-content">
+                            <p>Ready for encryption...</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="demo-controls">
+                    <button class="btn btn-primary" onclick="startEncryption()">
+                        <i class="fas fa-lock"></i> Encrypt Data
+                    </button>
+                    <button class="btn btn-secondary" onclick="performComputation()">
+                        <i class="fas fa-calculator"></i> Compute on Encrypted Data
+                    </button>
+                    <button class="btn btn-secondary" onclick="resetDemo()">
+                        <i class="fas fa-refresh"></i> Reset
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- Footer -->
+    <footer id="contact" class="footer">
+        <div class="footer-content">
+            <div class="footer-links">
+                <a href="#home">Home</a>
+                <a href="#features">Features</a>
+                <a href="#demo">Demo</a>
+                <a href="#mailto:contact@securehealthml.com">Contact</a>
+            </div>
+            <p>&copy; 2025 SecureHealth ML. Advancing healthcare through privacy-preserving machine learning.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Intersection Observer for fade-in animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-in').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Navbar scroll effect
+        window.addEventListener('scroll', () => {
+            const navbar = document.querySelector('.navbar');
+            if (window.scrollY > 100) {
+                navbar.style.background = 'rgba(255, 255, 255, 0.98)';
+                navbar.style.boxShadow = '0 5px 20px rgba(0, 0, 0, 0.1)';
+            } else {
+                navbar.style.background = 'rgba(255, 255, 255, 0.95)';
+                navbar.style.boxShadow = 'none';
+            }
+        });
+
+        // Demo functionality
+        function startEncryption() {
+            const encryptedContent = document.getElementById('encrypted-content');
+            const originalData = document.getElementById('data-content');
+            
+            // Show loading
+            encryptedContent.innerHTML = '<div class="loading"></div><p>Encrypting...</p>';
+            
+            setTimeout(() => {
+                encryptedContent.innerHTML = `
+                    <p><strong>Encrypted Data:</strong></p>
+                    <p style="font-family: monospace; font-size: 0.9em; color: #666;">
+                        0x7A8F9E2B1C4D...<br>
+                        0x3E5F7A9B2D8C...<br>
+                        0x8C2E5F9A1B7D...<br>
+                        0x4F8A2E7C9B3D...<br>
+                    </p>
+                    <p style="color: #10b981; font-weight: 600;"> ✓ Data Encrypted Successfully </p>
+                `;
+            }, 2000);
+        }
+
+        function performComputation() {
+            const encryptedContent = document.getElementById('encrypted-content');
+            
+            if (!encryptedContent.innerHTML.includes('Encrypted Successfully')) {
+                alert('Please encrypt the data first!');
+                return;
+            }
+            
+            encryptedContent.innerHTML = '<div class="loading"></div><p>Computing on encrypted data...</p>';
+            
+            setTimeout(() => {
+                encryptedContent.innerHTML = `
+                    <p><strong>ML Computation Results:</strong></p>
+                    <p>Risk Score: 0.73 (Encrypted)</p>
+                    <p>Treatment Recommendation: [Encrypted]</p>
+                    <p>Confidence: 94.2% (Encrypted)</p>
+                    <p style="color: #10b981; font-weight: 600;">✓ Computation Complete</p>
+                    <small style="color: #666;">Results computed without decrypting patient data</small>
+                `;
+            }, 3000);
+        }
+
+        function resetDemo() {
+            const encryptedContent = document.getElementById('encrypted-content');
+            encryptedContent.innerHTML = '<p>Ready for encryption...</p>';
+        }
+
+        // Add some interactive hover effects
+        document.querySelectorAll('.feature-card').forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-10px) scale(1.02)';
+            });
+            
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0) scale(1)';
+            });
+        });
+
+        // Dynamic background animation
+        let animationFrame;
+        function animateBackground() {
+            const hero = document.querySelector('.hero');
+            const scrolled = window.pageYOffset;
+            const parallax = scrolled * 0.5;
+            
+            hero.style.transform = `translateY(${parallax}px)`;
+            
+            animationFrame = requestAnimationFrame(animateBackground);
+        }
+
+        // Start background animation
+        animateBackground();
+
+        // Cleanup on page unload
+        window.addEventListener('beforeunload', () => {
+            if (animationFrame) {
+                cancelAnimationFrame(animationFrame);
+            }
+        });
+
+        // Add click animations to buttons
+        document.querySelectorAll('.btn').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                let ripple = document.createElement('span');
+                ripple.classList.add('ripple');
+                this.appendChild(ripple);
+                
+                let x = e.clientX - e.target.offsetLeft;
+                let y = e.clientY - e.target.offsetTop;
+                
+                ripple.style.left = `${x}px`;
+                ripple.style.top = `${y}px`;
+                
+                setTimeout(() => {
+                    ripple.remove();
+                }, 600);
+            });
+        });
+    </script>
+
+    <style>
+        /* Ripple effect for buttons */
+        .btn {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .ripple {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.6);
+            transform: scale(0);
+            animation: ripple 0.6s linear;
+            pointer-events: none;
+        }
+
+        @keyframes ripple {
+            to {
+                transform: scale(4);
+                opacity: 0;
+            }
+        }
+    </style>
+</body>
+</html>
