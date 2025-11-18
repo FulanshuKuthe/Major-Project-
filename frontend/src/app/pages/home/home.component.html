@@ -1,0 +1,78 @@
+<div class="home-container">
+  <nav class="navbar">
+    <div class="navbar-content">
+      <h2 class="logo">🏥 Healthcare App</h2>
+      <div class="nav-buttons">
+        <ng-container *ngIf="!(currentUser$ | async)">
+          <button routerLink="/login" class="btn btn-secondary">Login</button>
+          <button routerLink="/register" class="btn btn-primary">
+            Register
+          </button>
+        </ng-container>
+        <ng-container *ngIf="currentUser$ | async as user">
+          <span class="user-info">Welcome, {{ user.name }}!</span>
+          <button routerLink="/dashboard" class="btn btn-secondary">
+            Dashboard
+          </button>
+          <button (click)="logout()" class="btn btn-danger">Logout</button>
+        </ng-container>
+      </div>
+    </div>
+  </nav>
+
+  <div class="hero-section">
+    <div class="hero-content">
+      <h1>Secure Healthcare Data Processing</h1>
+      <p>Using Advanced Machine Learning with Homomorphic Encryption</p>
+      <div class="cta-buttons">
+        <button
+          *ngIf="!(currentUser$ | async)"
+          routerLink="/register"
+          class="btn btn-primary btn-large"
+        >
+          Get Started
+        </button>
+        <button
+          *ngIf="currentUser$ | async"
+          routerLink="/dashboard"
+          class="btn btn-primary btn-large"
+        >
+          Go to Dashboard
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="features-section">
+    <h2>Key Features</h2>
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon">🔐</div>
+        <h3>Data Security</h3>
+        <p>
+          End-to-end encryption for all healthcare data with industry-standard
+          protocols
+        </p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🧠</div>
+        <h3>ML Processing</h3>
+        <p>Advanced machine learning algorithms for health data analysis</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">📊</div>
+        <h3>Analytics</h3>
+        <p>Real-time analytics and insights from encrypted healthcare data</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">✅</div>
+        <h3>Compliance</h3>
+        <p>HIPAA compliant and fully secure data handling</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <p>&copy; 2025 Healthcare App. All rights reserved.</p>
+  </div>
+</div>
