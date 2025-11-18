@@ -48,19 +48,20 @@ export class LoginComponent implements OnInit {
     }
 
     this.loading = true;
-    this.authService
-      .login(this.f["email"].value, this.f["password"].value)
-      .subscribe(
-        () => {
-          this.router.navigate(["/dashboard"]);
-        },
-        (error: any) => {
-          this.error =
-            error.error?.message ||
-            error.error?.errors?.[0]?.msg ||
-            "Login failed. Please try again.";
-          this.loading = false;
-        }
-      );
+    const email = this.loginForm.get("email")?.value as string;
+    const password = this.loginForm.get("password")?.value as string;
+
+    this.authService.login(email, password).subscribe(
+      () => {
+        this.router.navigate(["/dashboard"]);
+      },
+      (error: any) => {
+        this.error =
+          error.error?.message ||
+          error.error?.errors?.[0]?.msg ||
+          "Login failed. Please try again.";
+        this.loading = false;
+      }
+    );
   }
 }
